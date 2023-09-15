@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
+	_ "github.com/go-sql-driver/mysql"
+
 	"github.com/anti-duhring/easy-shipping-microsservice/internal/entity"
 	"github.com/anti-duhring/easy-shipping-microsservice/internal/infra/repository"
 	"github.com/anti-duhring/easy-shipping-microsservice/internal/usecase"

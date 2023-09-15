@@ -29,7 +29,7 @@ func (r *RouteRepositoryMysql) Create(route *entity.Route) error {
 }
 
 func (r *RouteRepositoryMysql) FindById(id string) (*entity.Route, error) {
-	sqlQuery := "SELECT id, name, distance, status, freight_price FROM routes WHERE id = ?"
+	sqlQuery := "SELECT * FROM routes WHERE id = ?"
 
 	row := r.db.QueryRow(sqlQuery, id)
 
