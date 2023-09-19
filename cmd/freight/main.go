@@ -14,6 +14,18 @@ import (
 	ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
+// func main() {
+// 	myRoute := &entity.Route{}
+
+// 	fmt.Printf("My rout before: %+v\n", myRoute)
+
+// 	err := gofactory.Instantiate(myRoute, &struct{ Name string }{Name: "John Doe"})
+// 	if err != nil {
+// 		fmt.Println("Error:", err)
+// 	}
+// 	fmt.Printf("My route after: %+v\n", myRoute)
+// }
+
 func main() {
 	db, err := sql.Open("mysql", "root:root@tcp(host.docker.internal:3306)/routes?parseTime=true")
 
