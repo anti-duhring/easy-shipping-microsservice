@@ -33,11 +33,9 @@ func Instantiate(s interface{}, defaultValues interface{}) error {
 	structType := structValue.Type()
 
 	for i := 0; i < structType.NumField(); i++ {
-		currentField := structType.Field(i)
-		fieldName := currentField.Name
-
-		// Get the field by name
+		fieldName := structType.Field(i).Name
 		field := structValue.FieldByName(fieldName)
+		defaultValue := reflect.ValueOf(defaultValues).Elem().FieldByName(fieldName)
 
 		// Check if the field exists
 		if !field.IsValid() {
@@ -49,25 +47,32 @@ func Instantiate(s interface{}, defaultValues interface{}) error {
 			return fmt.Errorf("field %s cannot be set", fieldName)
 		}
 
-		if defaultValues != nil {
-			defaultFieldValue := reflect.ValueOf(defaultValues).Elem().FieldByName(fieldName)
+		if defaultValue.IsValid() {
+			field.Set(defaultValue)
 
-			if defaultFieldValue.IsValid() {
-				field.Set(defaultFieldValue)
-
-				break
-			}
-
+			break
 		}
 
-		setNewValue, ok := typesMap[currentField.Type.Name()]
-
-		if !ok {
-			return fmt.Errorf("type %s not supported", currentField.Type.Name())
-		}
-
-		setNewValue(&field)
+		setField(field.Type().String(), fieldName, &field)
 	}
+
+	return nil
+}
+
+type SetFieldParams struct {
+	FieldType string
+	FieldName string
+	Field     *reflect.Value
+}
+
+func setField(fieldType string, fieldName string, field *reflect.Value) error {
+	setNewValue, ok := typesMap[fieldType]
+
+	if !ok {
+		return fmt.Errorf("type %s not supported", fieldType)
+	}
+
+	setNewValue(field)
 
 	return nil
 }
