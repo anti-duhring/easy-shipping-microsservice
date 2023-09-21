@@ -17,7 +17,7 @@ var typesMap = map[string]func(field *reflect.Value){
 		field.SetFloat(val)
 	},
 	"Time": func(field *reflect.Value) {
-		val := generate.Date()
+		val := generate.Time()
 		field.Set(reflect.ValueOf(val))
 	},
 }
@@ -57,12 +57,6 @@ func Instantiate(s interface{}, defaultValues interface{}) error {
 	}
 
 	return nil
-}
-
-type SetFieldParams struct {
-	FieldType string
-	FieldName string
-	Field     *reflect.Value
 }
 
 func setField(fieldType string, fieldName string, field *reflect.Value) error {
